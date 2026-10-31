@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trilium 小树</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo-wrap"><img src="icons/logo.svg" class="logo" alt=""></span>
+      <div class="brand-text"><b>Trilium</b><span>我的笔记树</span></div>
+      <svg class="flower" viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="#ff9fbd" stroke="#7fae9a" stroke-width="1.6">
+          <circle cx="20" cy="9" r="6.5"/><circle cx="31" cy="17" r="6.5"/><circle cx="27" cy="30" r="6.5"/>
+          <circle cx="13" cy="30" r="6.5"/><circle cx="9" cy="17" r="6.5"/>
+        </g>
+        <circle cx="20" cy="20" r="5.5" fill="#ffe27a" stroke="#7fae9a" stroke-width="1.6"/>
+      </svg>
+    </div>
+  </header>
+
+  <div class="layout" id="layout">
+    <div class="searchstack">
+      <div class="search" title="搜索笔记">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="text" placeholder="满招损，谦受益" aria-label="搜索笔记" autocomplete="off">
+        <button id="search-clear" class="x" title="清除" hidden>
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div id="banner" class="banner" hidden></div>
+    </div>
+
+    <div class="tree-wrap" id="tree-wrap">
+      <div id="tree" class="tree"></div>
+      <div id="results" class="tree" hidden></div>
+      <div id="empty" class="empty" hidden></div>
+    </div>
+
+    <section id="editor" class="editor" hidden>
+      <div class="editor-head">
+        <input id="edit-title" class="field title" placeholder="给笔记起个名字" autocomplete="off">
+        <button id="edit-close" class="x big" title="收起编辑区">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div id="save-state" class="save-state"></div>
+      <div id="edit-rich" class="field rich" contenteditable="true" spellcheck="false"></div>
+      <textarea id="edit-code" class="field code" spellcheck="false" hidden></textarea>
+      <div id="edit-msg" class="note-msg" hidden></div>
+    </section>
+
+    <nav class="rail" aria-label="操作">
+      <button id="btn-new" class="rail-btn primary" title="新建笔记">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>新建</span>
+      </button>
+      <button id="btn-collapse" class="rail-btn" title="全部折叠">
+        <svg viewBox="0 0 24 24"><path d="m17 11-5-5-5 5M17 18l-5-5-5 5"/></svg><span>折叠</span>
+      </button>
+      <button id="btn-refresh" class="rail-btn" title="刷新">
+        <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg><span>刷新</span>
+      </button>
+      <button id="btn-open" class="rail-btn" title="在 Trilium 中打开" disabled>
+        <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>打开</span>
+      </button>
+      <button id="btn-delete" class="rail-btn" title="删除当前笔记" disabled>
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12M9 7V4h6v3"/></svg><span>删除</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="grass" aria-hidden="true"></div>
+  <footer class="foot">
+    <span id="dot" class="dot"></span>
+    <span id="conn-text" class="conn-text">未连接</span>
+    <button id="open-settings" class="foot-btn" title="连接设置">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>设置</span>
+    </button>
+  </footer>
+
+  <!-- 设置：藏在页脚，点开是浮层，不是新页面 -->
+  <section id="settings" class="settings" hidden>
+    <div class="settings-body">
+      <div class="settings-fields">
+        <label class="lbl" for="set-url">Trilium 地址</label>
+        <input id="set-url" class="field" value="http://localhost:37840" autocomplete="off">
+        <label class="lbl" for="set-token">ETAPI Token</label>
+        <input id="set-token" class="field" type="password" autocomplete="off" placeholder="粘贴 Token">
+        <label class="lbl" for="set-place">顶部“新建”按钮放到</label>
+        <select id="set-place" class="field">
+          <option value="day">今天的 Day Note（日记树）</option>
+          <option value="parent">指定父笔记</option>
+          <option value="calendar">指定日历集合（作为全天事件显示）</option>
+        </select>
+        <label class="lbl" for="set-parent" id="set-parent-label">父笔记 Note ID</label>
+        <input id="set-parent" class="field" autocomplete="off" placeholder="例如 ur11rSfHkzeV">
+        <p class="hint" id="set-place-hint">新建笔记会成为今天日记的子笔记。点笔记树某一行旁的“＋”仍建在那一行下面。</p>
+        <div id="set-status" class="set-status"></div>
+        <p class="hint">Token 在 Trilium「选项 → ETAPI」里创建。桌面版要保持运行。</p>
+      </div>
+      <div class="settings-btns">
+        <button id="set-save" class="rail-btn primary"><span>保存</span></button>
+        <button id="set-test" class="rail-btn"><span>测试</span></button>
+        <button id="set-close" class="rail-btn"><span>收起</span></button>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
